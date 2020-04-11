@@ -1,8 +1,18 @@
 const Router = require("@koa/router");
+const {getUser} = require("../controller");
+
 const router = new Router();
 
+
 router.get('/',async (ctx, next)=>{
-   ctx.body = "index page"
+    let users = await getUser();
+    if(users.errno === 0){
+        // console.log(users.data);
+        await ctx.render('index',{users:users.data})
+    }else{
+        ctx.body = users.msg
+    }
+
 });
 
 router.get('/search',async (ctx, next)=>{

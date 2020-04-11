@@ -1,0 +1,13 @@
+<%- include('widgets/header'); -%>
+<h1>
+    Title
+</h1>
+<p>
+    My page
+</p>
+<ul>
+    <% users.forEach(user=>{ %>
+        <li><%= user.username %></li>
+    <%})%>
+</ul>
+<%- include('widgets/footer'); -%>
