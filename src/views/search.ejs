@@ -1,0 +1,23 @@
+<%- include('widgets/header'); -%>
+<div class="explore-frame">
+    <div class="explore-left">
+        <% if(!posts){%>
+            <div>
+                No Posts Yet
+            </div>
+        <%}%>
+        <% if(posts){%>
+            <% posts.forEach(function (post) { %>
+                <%- include('widgets/post',{post:post}); -%>
+            <%})%>
+        <%}%>
+    </div>
+    <aside class="explore-right">
+        <ul class="tag-list">
+            <% locals.tags.forEach(function(tag){%>
+                <li><a href="/explore?query=<%= tag.name%>"><%= tag.name %></a></li>
+            <%})%>
+        </ul>
+    </aside>
+</div>
+<%- include('widgets/footer');  -%>

@@ -1,8 +1,64 @@
 <html>
 <head>
-    <title>Index Page</title>
+    <title>Travel Ideas</title>
+    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">Travel Idea</a>
+    <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
+    <div class="navbar-collapse collapse" id="navbarColor01" style="">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item <%if(locals.current===0){%> active <%}%>">
+                <a class="nav-link" href="/">Square<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <%if(locals.current===1){%> active <%}%> " href="/explore">Explore</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <%if(locals.current===2){%> active <%}%>" href="/about">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <%if(locals.current===3){%> active <%}%>" href="/register">Register</a>
+            </li>
+            <li class="nav-item dropdown" style="margin-right:50px">
+                <% if(locals.user) {%>
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <%= locals.user.username%>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/myspace">My Space</a>
+                        <a class="dropdown-item" href="/edit">Share A Trip</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/logout">Logout</a>
+                    </div>
+                <%}%>
+                <%if(!locals.user) {%>
+                    <a href="/signin" class="nav-link <%if(locals.current===4){%> active <%}%>">Login</a>
+                <%}%>
+            </li>
+        </ul>
+        <form class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+        </form>
+
+    </div>
+</nav>
+
+<main class="container">
 
 

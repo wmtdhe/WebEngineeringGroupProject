@@ -1,0 +1,61 @@
+<%- include('widgets/header'); -%>
+
+<%if(locals.user){%>
+    <p style="text-align: center; margin-top: 300px">
+        You Have Logged In, <a href="/">Go Back To Home Page</a>
+    </p>
+<%}%>
+<%if(!locals.user){%>
+<div class="signin" id="sign">
+    <form class="form-signin">
+        <h2 style="text-align: center">Sign In</h2>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password">
+        </div>
+        <button type="submit" class="btn btn-primary" id="submit">Log In</button>
+        <a href="/register">Go To Register</a>
+    </form>
+</div>
+<%}%>
+<script>
+        $(function () {
+            $('#submit').click(function(e){
+                let username = $('#username').val();
+                let password = $('#password').val();
+                e.preventDefault();
+                $.ajax({
+                    type:'POST',
+                    url:'/api/login',
+                    data:{username, password},
+                    success:function (res) {
+                        if(res.errno!==0){
+                            let errors = document.querySelector('#errors')
+                            let li = document.createElement('li')
+                            li.innerText = res.msg
+                            if(errors){
+                                $('#errors').html(li)
+                            }else{
+                                $('#sign').append(`<ul id="errors" class="alert alert-danger" style="width: 100%"></ul>`)
+                                $('#errors').html(li)
+                            }
+                        }else{
+                            window.location.assign('/')
+                            // console.log(res.data)
+                            // alert('found')
+                        }
+                    },
+                    error:function (e) {
+                        console.log(e)
+                    }
+                })
+            })
+        })
+
+</script>
+
+<%- include('widgets/footer'); -%>

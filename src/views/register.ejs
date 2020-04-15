@@ -1,0 +1,95 @@
+<%- include('widgets/header'); -%>
+
+<div class="signin" id="register">
+    <form class="form-signin">
+        <h2 style="text-align: center">Register</h2>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password">
+        </div>
+        <div class="form-group">
+            <label for="repassword">Reenter Password</label>
+            <input type="password" class="form-control" id="repassword">
+        </div>
+        <button type="submit" class="btn btn-primary" id="submit">Register</button>
+        <a href="/signin">Log In</a>
+    </form>
+</div>
+
+<script>
+
+    $(function () {
+        function popError(msg){
+            let errors = document.querySelector('#errors')
+            let frag = document.createDocumentFragment();
+            for(let i=0;i<msg.length;i++){
+                let li = document.createElement('li')
+                li.innerText = msg[i]
+                frag.appendChild(li)
+            }
+            if(errors){
+                $('#errors').html(frag)
+            }else{
+                $('#register').append(`<ul id="errors" class="alert alert-danger" style="width: 80%"></ul>`)
+                $('#errors').html(frag)
+            }
+        }
+
+        $('#submit').click(function (e) {
+            e.preventDefault();
+            let username = $("#username").val();
+            let password = $('#password').val();
+            let repass = $('#repassword').val();
+            let errorArr = []
+            if(username.length<6 || username.length>18){
+                errorArr.push('Username length should be between 6 and 18')
+            }
+            if(repass!==password){
+                errorArr.push('Passwords did not match')
+            }
+            if(password.length<8){
+                errorArr.push('Password should be equal or longer than 8')
+            }
+
+            if(errorArr.length!==0){
+                popError(errorArr)
+                return;
+            }
+
+            $.ajax({
+                type:'POST',
+                url:'/api/register',
+                data:{
+                    username,
+                    password,
+                    repass
+                },
+                success:function (res) {
+                    console.log(res)
+                    if(res.errno===0){
+                        location.assign('/signin')
+                    }else{
+                        let errors = document.querySelector('#errors')
+                        let li = document.createElement('li')
+                        li.innerText = res.msg
+                        if(errors){
+                            $('#errors').html(li)
+                        }else{
+                            $('#register').append(`<ul id="errors" class="alert alert-danger" style="width: 80%"></ul>`)
+                            $('#errors').html(li)
+                        }
+                    }
+                },
+                error:function (e) {
+                    console.log(e)
+                }
+            })
+        })
+    })
+</script>
+
+<%- include('widgets/footer'); -%>

@@ -1,13 +1,56 @@
 <%- include('widgets/header'); -%>
-<h1>
-    Title
-</h1>
-<p>
-    My page
-</p>
-<ul>
-    <% users.forEach(user=>{ %>
-        <li><%= user.username %></li>
-    <%})%>
-</ul>
+
+
+<div id="carousel" class="carousel slide" data-ride="carousel">
+
+    <div class="carousel-inner" style="height: 100%">
+        <div class="caption"><p>Today's Recommendations</p></div>
+        <div class="carousel-item active" data-interval="10000">
+            <img src="img/img1.jpg" class="d-block w-100 h-100" >
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Second slide label</h5>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+        </div>
+        <div class="carousel-item" data-interval="10000">
+            <img src="img/img2.jpg" class="d-block w-100 h-100" >
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Second slide label</h5>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+        </div>
+        <div class="carousel-item" data-interval="10000">
+            <img src="img/img3.jpg" class="d-block w-100 h-100" >
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Second slide label</h5>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+        </div>
+    </div>
+    <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+<div>
+    aaa
+</div>
+
+<div>
+    aaa
+</div><div>
+    aaa
+</div><div>
+    aaa
+</div><div>
+    aaa
+</div><div>
+    aaa
+</div>
+
 <%- include('widgets/footer'); -%>
