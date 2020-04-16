@@ -2,6 +2,11 @@ const seq = require("./seq");
 const Sequelize = require("sequelize");
 
 const User = seq.define("user",{
+    email:{
+        type:Sequelize.STRING,
+        allowNull:false,
+        unique: true,
+    },
     username:{
         type:Sequelize.STRING,
         allowNull: false
@@ -43,6 +48,21 @@ const Tag = seq.define("tag",{
     }
 });
 
+const Picture = seq.define("picture",{
+    url:{
+        type:Sequelize.STRING,
+        allowNull:false,
+    },
+    userId:{
+        type:Sequelize.INTEGER,
+        allowNull:false,
+    },
+    blogId:{
+        type:Sequelize.INTEGER,
+        allowNull:true
+    }
+});
+
 Post.belongsTo(User,{
     foreignKey:"userId"
 });
@@ -52,7 +72,8 @@ Post.belongsTo(Tag,{
 });
 
 module.exports = {
-  User,
-  Post,
-  Tag,
+    User,
+    Post,
+    Tag,
+    Picture
 };

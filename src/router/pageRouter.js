@@ -13,7 +13,8 @@ router.get('/',async (ctx, next)=>{
 router.get('/explore',async (ctx, next)=>{
     let posts = [{id:1,title:'wandering',tag:'share'},{id:2,title:'lol',tag:'q&a'}];
     let tags = [{name:'js'},{name:'miao'},{name:'experience'},{name:'whywhy'},{name:'again'}];
-   await ctx.render('search',{current:1, posts, tags})
+    let {user} = ctx.session;
+   await ctx.render('search',{current:1, posts, tags, user})
 });
 
 router.get('/signin',async (ctx, next)=>{

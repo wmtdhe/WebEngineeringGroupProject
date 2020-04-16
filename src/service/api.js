@@ -1,26 +1,27 @@
 const { User } = require('../db/model');
 
-async function findUser(username, password){
+async function findUser(email, password){
     let whereOption = {};
     try{
-        if(username)whereOption.username = username;
+        if(email)whereOption.email = email;
         if(password)whereOption.password = password;
 
             let user = await User.findOne({
                 where:whereOption,
-                attributes:['id','username']
-            })
+                attributes:['id','username','email']
+            });
             return user?user.dataValues:null
     }catch (e) {
         return null
     }
 }
 
-async function createUser(username, password){
+async function createUser(username, password,email){
     try{
         let result = await User.create({
             username,
-            password
+            password,
+            email
         });
         return result
     }catch (e) {

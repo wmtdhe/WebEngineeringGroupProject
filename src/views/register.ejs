@@ -4,7 +4,11 @@
     <form class="form-signin">
         <h2 style="text-align: center">Register</h2>
         <div class="form-group">
-            <label for="username">Username</label>
+            <label for="email">Email</label>
+            <input type="email"  class="form-control" id="email">
+        </div>
+        <div class="form-group">
+            <label for="username">Name</label>
             <input type="text" class="form-control" id="username">
         </div>
         <div class="form-group">
@@ -12,7 +16,7 @@
             <input type="password" class="form-control" id="password">
         </div>
         <div class="form-group">
-            <label for="repassword">Reenter Password</label>
+            <label for="repassword">ReEnter Password</label>
             <input type="password" class="form-control" id="repassword">
         </div>
         <button type="submit" class="btn btn-primary" id="submit">Register</button>
@@ -41,10 +45,15 @@
 
         $('#submit').click(function (e) {
             e.preventDefault();
+            let email = $("#email").val()
             let username = $("#username").val();
             let password = $('#password').val();
             let repass = $('#repassword').val();
             let errorArr = []
+            let regExp = /^([a-zA-Z])+[a-zA-Z0-9]*@([a-z])+\.([a-zA-Z])+$/
+            if(!regExp.test(email)){
+                errorArr.push('Wrong email format')
+            }
             if(username.length<6 || username.length>18){
                 errorArr.push('Username length should be between 6 and 18')
             }
@@ -66,7 +75,8 @@
                 data:{
                     username,
                     password,
-                    repass
+                    repass,
+                    email
                 },
                 success:function (res) {
                     console.log(res)

@@ -9,23 +9,23 @@ const router = new Router();
 router.prefix('/api');
 
 router.post('/login',async (ctx, next)=>{
-    let {username, password } = ctx.request.body;
-    let user = await getUser(username, password);
+    let {email, password } = ctx.request.body;
+    let user = await getUser(email, password);
     if(user.errno===0){
-        //console.log(user);  //{errono, }
+        // console.log(user);  //{errono, }
         ctx.session.user = user.data;
     }
     ctx.body = user
 });
 
 router.post('/register',async (ctx,next)=>{
-   let {username, password, repass} = ctx.request.body;
+   let {username, password, repass, email} = ctx.request.body;
     // check if username is duplicate
     let user = await getUser(username);
     if(user.errno===0){
         ctx.body = new FailureResponse(1000,'Username already existed')
     }else{
-        let result = await registerUser(username, password);
+        let result = await registerUser(username, password, email);
         ctx.body =  result //
     }
 });

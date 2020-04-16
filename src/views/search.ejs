@@ -1,4 +1,4 @@
-<%- include('widgets/header'); -%>
+<%- include('widgets/header', {user:user}); -%>
 <div class="explore-frame">
     <div class="explore-left">
         <% if(!posts){%>
@@ -15,7 +15,7 @@
     <aside class="explore-right">
         <ul class="tag-list">
             <% locals.tags.forEach(function(tag){%>
-                <li><a href="/explore?query=<%= tag.name%>"><%= tag.name %></a></li>
+                <li><a href="/explore?tag=<%= tag.name%>"><%= tag.name %></a></li>
             <%})%>
         </ul>
     </aside>

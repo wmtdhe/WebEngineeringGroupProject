@@ -2,8 +2,8 @@ const { findUser, createUser } = require('../service/api');
 const { SuccessResponse, FailureResponse } = require('./responseModel');
 
 
-async function getUser(username, password){ //
-    let user = await findUser(username, password);
+async function getUser(email, password){ //
+    let user = await findUser(email, password);
     if(user){
         return new SuccessResponse(user)
     }else{
@@ -11,8 +11,8 @@ async function getUser(username, password){ //
     }
 }
 
-async function registerUser(username,password){
-    let result = await createUser(username, password);
+async function registerUser(username,password,email){
+    let result = await createUser(username, password, email);
     if(result){
         let ret = result.dataValues;
         // console.log(ret);
