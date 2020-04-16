@@ -13,11 +13,20 @@
         <%}%>
     </div>
     <aside class="explore-right">
-        <ul class="tag-list">
-            <% locals.tags.forEach(function(tag){%>
-                <li><a href="/explore?tag=<%= tag.name%>"><%= tag.name %></a></li>
-            <%})%>
-        </ul>
+        <div class="tags">
+            <h4>Tags:</h4>
+            <ul class="tag-list">
+                <% locals.tags.forEach(function(tag){%>
+                    <li><a href="/explore?tag=<%= tag.name%>"><%= tag.name %></a></li>
+                <%})%>
+            </ul>
+        </div>
+        <div class="mashup-hot-deal">
+            <h4>Hot Deals:</h4>
+        </div>
+        <div class="mashup-weather">
+            <h4>Today's Weather:</h4>
+        </div>
     </aside>
 </div>
 <%- include('widgets/footer');  -%>

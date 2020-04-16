@@ -11,9 +11,12 @@ router.get('/',async (ctx, next)=>{
 });
 
 router.get('/explore',async (ctx, next)=>{
+    let {user} = ctx.session;
+    let {tag, query} = ctx.query;
     let posts = [{id:1,title:'wandering',tag:'share'},{id:2,title:'lol',tag:'q&a'}];
     let tags = [{name:'js'},{name:'miao'},{name:'experience'},{name:'whywhy'},{name:'again'}];
-    let {user} = ctx.session;
+
+    console.log(tag, query);
    await ctx.render('search',{current:1, posts, tags, user})
 });
 

@@ -64,22 +64,23 @@ body{
 }
 
 .explore-frame{
-    display: flex;
-    flex-flow:row wrap;
-    padding: 20px 0;
-    justify-content: space-between;
-
+    position: relative;
+    margin: 20px 0;
 }
 
 .explore-left{
-    flex:0 0 69%;
+    width:69%;
     background-color: rgba(223,123,212,0.7);
     border-radius: 3px;
 }
 .explore-right{
-    flex:0 0 30%;
+    position: absolute;
+    top:0;
+    right: 0;
+    width: 30%;
     background-color: rgba(223,123,25,0.7);
     border-radius: 3px;
+    padding: 1em;
 }
 .post-frame{
     padding: 20px 30px;
