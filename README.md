@@ -5,9 +5,12 @@
 2. node sync.js
 
     sync database (remember to update config file in src/db/seq.js)
-3. node app.js (can install nodemon to enable hot reloading ---> npm install nodemon -g)
+3. npm install nodemon -g
+
+    enable hot reloading
+4. npm run dev
 
     start server
-4. localhost:3000
+5. localhost:3000
 
     open the application
