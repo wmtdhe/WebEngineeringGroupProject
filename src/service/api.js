@@ -78,7 +78,7 @@ async function getUserPosts(userid) {
         if (userid)whereOption.userId = userid;
         let posts = await Post.findAll({
             where: whereOption,
-            attributes:['id', 'title', 'content', 'tagId', 'updatedAt']
+            attributes:['id', 'title', 'content', 'tagId', 'updatedAt', 'destination', 'startDate', 'endDate']
         });
 
         if (!posts) return null;
@@ -88,9 +88,9 @@ async function getUserPosts(userid) {
             p = {
                 'id': post.dataValues['id'],
                 'title': post.dataValues['title'],
-                'content': post.dataValues['content'],
                 'tag': tag,
                 'updatedAt': updatedAt,
+                'destination': post.dataValues['destination'],
             }
             posts_arr.push(p)
         }
@@ -111,7 +111,7 @@ async function getPost(postId){
         if (postId)whereOption.id = postId;
         let post = await Post.findOne({
             where: whereOption,
-            attributes:['id', 'userId', 'title', 'content', 'tagId', 'updatedAt']
+            attributes:['id', 'userId', 'title', 'content', 'tagId', 'updatedAt', 'destination', 'startDate', 'endDate']
         });
         if(!post) return null;
         let tag = await getTag(post.dataValues['tagId']);
@@ -119,6 +119,8 @@ async function getPost(postId){
 
         let updatedAt = getFormattedDatetime(post.dataValues['updatedAt']);
         post.dataValues['updatedAt'] = updatedAt;
+        post.dataValues['startDate'] = post.dataValues['startDate'].toDateString();
+        post.dataValues['endDate'] = post.dataValues['endDate'].toDateString();
         return post.dataValues;
     }catch(e){
         return null;

@@ -85,11 +85,13 @@ body{
 .post-frame{
     padding: 20px 30px;
     border-bottom: 1px solid #818182;
-
+    display: flex;
+    flex-direction: column;
 }
 
 .post-date{
     margin-right: 1em;
+    font-size: 12px;
 }
 .light-color,.light-color-date{
     color:#818182;
@@ -139,6 +141,9 @@ body{
     align-self: flex-end;
     font-style: italic;
     font-size: 12px;
+}
+.posts-detail-destination{
+    align-self: flex-end;
 }
 .posts-detail-delete{
     align-self: flex-end;

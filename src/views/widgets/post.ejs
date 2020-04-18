@@ -1,4 +1,6 @@
 <div class="post-frame">
-    <a href="/posts?id=<%= locals.post.id%>" class="dark-color"><h2><%= locals.post.title %></h2></a>
-    <span class="post-date light-color-date"><%=locals.post.updatedAt%></span><span><a  class="light-color" href="/explore?tag=<%=locals.post.tag%>"><%= locals.post.tag %></a></span>
+	<a href="/posts?id=<%= locals.post.id%>" class="dark-color"><h2><%= locals.post.title %></h2></a>
+	<span class="post-date">Update Time: <%=locals.post.updatedAt%></span>    
+    <span class="post-date">Tag: <a class="light-color" href="/explore?tag=<%=locals.post.tag%>"><%= locals.post.tag %></a></span>
+    <span class="post-date">Destination: <%= post.destination %></span>
 </div>
