@@ -6,7 +6,9 @@ const {
     delPost,
     poComment,
     getComments,
-    getPictures
+    getPictures,
+    getPostsByTagname,
+    getPostsByDestination
 } = require('../service/api');
 const { SuccessResponse, FailureResponse } = require('./responseModel');
 
@@ -85,6 +87,24 @@ async function retrievePostPictures(postId){
     }
 }
 
+async function retrievePostsByTagname(tagname){
+    let posts = await getPostsByTagname(tagname);
+    if (posts) {
+        return new SuccessResponse(posts);
+    } else {
+        return new FailureResponse(1006, 'failed retrieve posts by tag name');
+    }
+}
+
+async function retrievePostsByDestination(destination){
+    let posts = await getPostsByDestination(destination);
+    if (posts) {
+        return new SuccessResponse(posts);
+    } else {
+        return new FailureResponse(1007, 'failed retrieve posts by destination');
+    }
+}
+
 
 module.exports = {
     getUser,
@@ -94,5 +114,7 @@ module.exports = {
     deletePost,
     postComment,
     retrieveComments,
-    retrievePostPictures
+    retrievePostPictures,
+    retrievePostsByTagname,
+    retrievePostsByDestination
 };

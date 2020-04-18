@@ -6,6 +6,9 @@ const {
     Picture
 } = require('../db/model');
 
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+
 function getFormattedDatetime(t) {
     hr = ("0" + t.getHours()).slice(-2);
     min = ("0" + t.getMinutes()).slice(-2);
@@ -103,7 +106,6 @@ async function getUserPosts(userid) {
         if (!posts) return null;
         for (post of posts) {
             let tags = await getPostTags(post.dataValues['id']);
-            console.log(tags);
             let updatedAt = getFormattedDatetime(post.dataValues['updatedAt']);
             p = {
                 'id': post.dataValues['id'],
@@ -222,6 +224,59 @@ async function getPictures(postId){
     }
 }
 
+async function getPostsByTagname(tagname){
+    let whereOption = {};
+    posts_arr = [];
+    try{
+        if(tagname)whereOption.name = tagname;
+        postIds_arr = []
+        let tags = await Tag.findAll({
+            where:whereOption,
+            attributes:['postId']
+        });
+        if (!tags) return null;
+        for (tag of tags){
+            postId = tag.dataValues['postId'];
+            post = await getPost(postId);
+            posts_arr.push(post);
+        }
+        return posts_arr;
+    }catch(e){
+        return null;
+    }
+}
+
+async function getPostsByDestination(destination){
+    var whereOption = {};
+    posts_arr = [];
+    try{
+        if (destination && destination.trim().length > 0) {
+            console.log(destination, destination.trim().length);
+            whereOption = {destination: {[Op.like]:'%' + destination + '%'}}
+        } else {
+            return null;
+        }
+        let posts = await Post.findAll({
+            where:whereOption,
+            attributes:['id', 'userId', 'title', 'content', 'updatedAt', 'destination', 'startDate', 'endDate']
+        });
+        if (!posts) return null;
+        for (post of posts){            
+            let tags = await getPostTags(post.dataValues['id']);
+            post.dataValues['tag'] = tags.join(', ');
+            let updatedAt = getFormattedDatetime(post.dataValues['updatedAt']);
+            post.dataValues['updatedAt'] = updatedAt;
+            post.dataValues['startDate'] = post.dataValues['startDate'].toDateString();
+            post.dataValues['endDate'] = post.dataValues['endDate'].toDateString();
+            posts_arr.push(post.dataValues);
+        }
+        return posts_arr;
+    }catch(e){
+        console.log(e);
+        return null;
+    }
+}
+
 module.exports = {
     findUser,
     createUser,
@@ -230,5 +285,7 @@ module.exports = {
     delPost,
     poComment,
     getComments,
-    getPictures
+    getPictures,
+    getPostsByTagname,
+    getPostsByDestination
 };

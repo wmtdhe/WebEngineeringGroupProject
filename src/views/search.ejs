@@ -1,11 +1,22 @@
 <%- include('widgets/header', {user:user}); -%>
 <div class="explore-frame">
+
+    <form class="form-inline">
+        <div class="div-select-type">
+            <label for="type">Search by type:</label>
+            <select id="select-type" class="form-control">
+              <option value="destination" <% if(type==='destination'){%> selected <%}%> >Destination</option>
+              <option value="tag" <% if(type==='tag'){%> selected <%}%> >Tag</option>
+            </select>
+        </div>
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="query" value="<%=query%>">
+        <button class="btn btn-outline-info my-2 my-sm-0" type="submit" id="submit">Search</button>
+    </form>
+
+    <div>
+        Total <%= posts.length %> Posts Found
+    </div>
     <div class="explore-left">
-        <% if(!posts){%>
-            <div>
-                No Posts Yet
-            </div>
-        <%}%>
         <% if(posts){%>
             <% posts.forEach(function (post) { %>
                 <%- include('widgets/post',{post:post}); -%>
@@ -29,4 +40,18 @@
         </div>
     </aside>
 </div>
+
+<script>
+    $(function () {
+
+        $('#submit').click(function (e) {
+            e.preventDefault();
+            let type = $("#select-type").val();
+            let query = $("#query").val();
+            location.assign('/explore?type=' + type + '&query=' + query);
+        })
+        
+    })
+</script>
+
 <%- include('widgets/footer');  -%>

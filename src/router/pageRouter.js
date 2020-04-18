@@ -5,7 +5,9 @@ const {
     retrievePost,
     deletePost,
     retrieveComments,
-    retrievePostPictures
+    retrievePostPictures,
+    retrievePostsByTagname,
+    retrievePostsByDestination
 } = require("../controller/api");
 
 const router = new Router();
@@ -19,12 +21,18 @@ router.get('/',async (ctx, next)=>{
 
 router.get('/explore',async (ctx, next)=>{
     let {user} = ctx.session;
-    let {tag, query} = ctx.query;
-    let posts = [{id:1,title:'wandering',tag:'share'},{id:2,title:'lol',tag:'q&a'}];
+    let {type, query} = ctx.query;
+    var posts = [];
     let tags = [{name:'js'},{name:'miao'},{name:'experience'},{name:'whywhy'},{name:'again'}];
 
-    console.log(tag, query);
-   await ctx.render('search',{current:1, posts, tags, user})
+    if (type === 'tag') {
+        let posts_res = await retrievePostsByTagname(query);
+        posts = posts_res.data;
+    } else if (type === 'destination') {
+        let posts_res = await retrievePostsByDestination(query);
+        posts = posts_res.data;
+    }
+   await ctx.render('search',{current:1, posts, tags, user, type, query})
 });
 
 router.get('/signin',async (ctx, next)=>{

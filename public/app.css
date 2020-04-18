@@ -175,3 +175,8 @@ body{
 .post-image{
     height: 400px;
 }
+.div-select-type{
+    margin-right: 5px;
+    display: flex;
+    flex-direction: row;
+}

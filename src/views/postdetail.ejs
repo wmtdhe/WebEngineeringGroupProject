@@ -82,7 +82,6 @@
         $('#delete-post').click(function (e) {
             e.preventDefault();
             let postId = <%= post.id %>;
-            console.log('hahaha');
             $.ajax({
                 type:'GET',
                 url:'/api/posts-delete?id=<%= post.id %>',
