@@ -1,7 +1,11 @@
 const Router = require("@koa/router");
 const {
     getUser,
-    retrieveUserPost
+    retrieveUserPosts,
+    retrievePost,
+    deletePost,
+    retrieveComments,
+    retrievePostPictures
 } = require("../controller/api");
 
 const router = new Router();
@@ -48,12 +52,28 @@ router.get('/myspace',async (ctx,next)=>{
     if(!user){
         ctx.redirect('/signin')
     }else{
-        let posts_res = await retrieveUserPost(user.id);
+        let posts_res = await retrieveUserPosts(user.id);
         let posts = posts_res.data;
         await ctx.render('myspace',{current:5,user,posts})
     }
 });
 
-router.get
+router.get('/posts', async(ctx, next)=>{
+    let { user } = ctx.session;
+    if(!user){
+        ctx.redirect('/signin')
+    } else {
+        let { id } = ctx.query;
+        let post_res = await retrievePost(id);
+        let post = post_res.data;
+
+        let comments_res = await retrieveComments(id);
+        let comments = comments_res.data;
+
+        let pictures_res = await retrievePostPictures(id);
+        let pictures = pictures_res.data;
+        await ctx.render('postdetail',{current:6,user,post,comments,pictures})
+    }
+});
 
 module.exports = router;

@@ -57,7 +57,7 @@ const Picture = seq.define("picture",{
         type:Sequelize.INTEGER,
         allowNull:false,
     },
-    blogId:{
+    postId:{
         type:Sequelize.INTEGER,
         allowNull:true
     }

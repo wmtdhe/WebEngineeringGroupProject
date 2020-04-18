@@ -1,0 +1,99 @@
+<%- include('widgets/header'); -%>
+
+<div class="posts-detail-frame">
+    <% if(!post){%>
+        <div>
+            Unavailable Post
+        </div>
+    <%}%>
+    <% if(post){%>
+        <h2><%= post.title %></h2>
+        <h4 class="posts-detail-tag">Tag: <%= post.tag %></h4>
+        <div class="posts-detail-time"><%= post.updatedAt %></div>
+        <div class="posts-detail-content"><%= post.content %></div>
+
+        <% if(pictures){%>
+            <% pictures.forEach(function (picture) { %>
+                <img src="<%= picture.url %>" class="post-image">
+            <%})%>
+        <%}%>
+
+        <% if(post.userId === user.id){%>
+            <button type="submit" class="btn btn-primary btn-comment" id="delete-post">Delete Post</button>
+        <%}%>
+        <div class="form-group div-comment">
+            <label for="comment"><b>Comment</b></label>
+            <textarea type="text" class="form-control" id="comment" maxlength="255"></textarea> 
+            <button type="submit" class="btn btn-primary btn-comment" id="submit">Submit Comment</button>
+        </div>
+
+        <% if(!comments){%>
+            <div>
+                No Comments Yet
+            </div>
+        <%}%>
+        <% if(comments){%>
+            <% comments.forEach(function (comment) { %>
+                <div class="comment-frame">
+                    <div class="comment-username"><%= comment.username %></div>
+                    <div class="comment-time"><%= comment.updatedAt %></div>
+                    <div class="comment-content"><%= comment.content %></div>
+                </div>
+            <%})%>
+        <%}%>
+        
+    <%}%>
+</div>
+
+<script>
+
+    $(function () {
+        $('#submit').click(function (e) {
+            e.preventDefault();
+            var content = $("#comment").val();
+            if($("#comment").val().trim().length < 1)
+            {
+                alert("Please Enter Text...");
+                return; 
+            }
+            let postId = <%= post.id %>;
+            let userId = <%= user.id %>
+            $.ajax({
+                type:'POST',
+                url:'/api/comment',
+                data:{
+                    content,
+                    userId,
+                    postId
+                },
+                success:function (res) {
+                    location.assign('/posts?id=<%= post.id %>')
+                },
+                error:function (e) {
+                    console.log(e)
+                }
+            })
+        })
+
+
+        $('#delete-post').click(function (e) {
+            e.preventDefault();
+            let postId = <%= post.id %>;
+            console.log('hahaha');
+            $.ajax({
+                type:'GET',
+                url:'/api/posts-delete?id=<%= post.id %>',
+                success:function (res) {
+                    location.assign('/myspace')
+                },
+                error:function (e) {
+                    console.log(e)
+                }
+            })
+        })
+
+    })
+</script>
+
+
+<%- include('widgets/footer'); -%>

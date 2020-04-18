@@ -126,3 +126,47 @@ body{
     background-color: rgba(223,123,212,0.7);
     margin: 20px 0;
 }
+.posts-detail-frame {
+    position: relative;
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+}
+.posts-detail-tag{
+    align-self: flex-end;
+}
+.posts-detail-time{
+    align-self: flex-end;
+    font-style: italic;
+    font-size: 12px;
+}
+.posts-detail-delete{
+    align-self: flex-end;
+}
+.div-comment{
+    display: flex;
+    flex-direction: column;
+}
+.btn-comment{
+    margin: 10px 0;
+    align-self: flex-end;
+}
+.comment-frame{
+    position: relative;
+    background-color: #F7F8E7;
+    margin: 5px 0;
+    display: flex;
+    flex-direction: column;
+}
+.comment-username{
+    align-self: flex-start;
+    font-weight: bold;
+}
+.comment-time{
+    align-self: flex-end;
+    font-style: italic;
+    font-size: 12px;
+}
+.post-image{
+    height: 400px;
+}

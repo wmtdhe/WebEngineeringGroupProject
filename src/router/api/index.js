@@ -1,5 +1,12 @@
 const Router = require('@koa/router');
-const {getUser, registerUser} = require('../../controller/api');
+const {
+    getUser, 
+    registerUser,
+    postComment,
+    retrieveComments,
+    retrievePost,
+    deletePost
+} = require('../../controller/api');
 const {SuccessResponse, FailureResponse} = require("../../controller/responseModel");
 
 
@@ -28,6 +35,18 @@ router.post('/register',async (ctx,next)=>{
         let result = await registerUser(username, password, email);
         ctx.body =  result //
     }
+});
+
+router.post('/comment', async(ctx,next)=>{
+    let { content, userId, postId } = ctx.request.body;
+    let result = await postComment(postId, userId, content);
+    ctx.body = result;
+});
+
+router.get('/posts-delete', async(ctx,next)=>{
+    let { id } = ctx.query;
+    let result = await deletePost(id);
+    ctx.body = result;
 });
 
 

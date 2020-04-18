@@ -1,7 +1,7 @@
 <%- include('widgets/header'); -%>
 
 <div class="myspace-frame">
-    <% if(!posts){%>
+    <% if(!posts || posts.length === 0){%>
         <div>
             No Posts Yet
         </div>
