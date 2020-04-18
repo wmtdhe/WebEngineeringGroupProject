@@ -78,21 +78,21 @@ const Comment = seq.define("comment", {
     }
 });
 
-Comment.belongsTo(User, {
-    foreignKey:"userId"
-});
+// Comment.belongsTo(User, {
+//     foreignKey:"userId"
+// });
 
-Comment.belongsTo(Post, {
-    foreignKey: "postId"
-});
+// Comment.belongsTo(Post, {
+//     foreignKey: "postId"
+// });
 
-Post.belongsTo(User,{
-    foreignKey:"userId"
-});
+// Post.belongsTo(User,{
+//     foreignKey:"userId"
+// });
 
-Post.belongsTo(Tag,{
-    foreignKey:"tagId"
-});
+// Post.belongsTo(Tag,{
+//     foreignKey:"tagId"
+// });
 
 module.exports = {
     User,
