@@ -33,10 +33,6 @@ const Post = seq.define("post",{
         type:Sequelize.INTEGER,
         allowNull:false
     },
-    tagId:{
-        type:Sequelize.INTEGER,
-        allowNull:false
-    },
     destination:{
         type:Sequelize.STRING,
         allowNull:false
@@ -55,8 +51,11 @@ const Post = seq.define("post",{
 const Tag = seq.define("tag",{
     name:{
         type:Sequelize.STRING,
-        allowNull:false,
-        unique:true
+        allowNull:false
+    },
+    postId:{
+        type:Sequelize.INTEGER,
+        allowNull:false
     }
 });
 

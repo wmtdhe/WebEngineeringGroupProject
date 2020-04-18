@@ -71,6 +71,25 @@ async function getTag(tagId) {
     }
 }
 
+async function getPostTags(postId){
+    let whereOption = {};
+    tags_arr = [];
+    try{
+        if (postId)whereOption.postId = postId;
+        let tags = await Tag.findAll({
+            where:whereOption,
+            attributes:['name']
+        });
+        if (!tags) return null;
+        for (tag of tags){
+            tags_arr.push(tag.dataValues['name']);
+        }
+        return tags_arr;
+    }catch(e){
+        return null;
+    }
+}
+
 async function getUserPosts(userid) {
     let whereOption = {};
     posts_arr = []
@@ -78,17 +97,18 @@ async function getUserPosts(userid) {
         if (userid)whereOption.userId = userid;
         let posts = await Post.findAll({
             where: whereOption,
-            attributes:['id', 'title', 'content', 'tagId', 'updatedAt', 'destination', 'startDate', 'endDate']
+            attributes:['id', 'title', 'content', 'updatedAt', 'destination', 'startDate', 'endDate']
         });
 
         if (!posts) return null;
         for (post of posts) {
-            let tag = await getTag(post.dataValues['tagId']);
+            let tags = await getPostTags(post.dataValues['id']);
+            console.log(tags);
             let updatedAt = getFormattedDatetime(post.dataValues['updatedAt']);
             p = {
                 'id': post.dataValues['id'],
                 'title': post.dataValues['title'],
-                'tag': tag,
+                'tag': tags.join(', '),
                 'updatedAt': updatedAt,
                 'destination': post.dataValues['destination'],
             }
@@ -111,12 +131,11 @@ async function getPost(postId){
         if (postId)whereOption.id = postId;
         let post = await Post.findOne({
             where: whereOption,
-            attributes:['id', 'userId', 'title', 'content', 'tagId', 'updatedAt', 'destination', 'startDate', 'endDate']
+            attributes:['id', 'userId', 'title', 'content', 'updatedAt', 'destination', 'startDate', 'endDate']
         });
         if(!post) return null;
-        let tag = await getTag(post.dataValues['tagId']);
-        post.dataValues['tag'] = tag;
-
+        let tags = await getPostTags(post.dataValues['id']);
+        post.dataValues['tag'] = tags.join(', ');
         let updatedAt = getFormattedDatetime(post.dataValues['updatedAt']);
         post.dataValues['updatedAt'] = updatedAt;
         post.dataValues['startDate'] = post.dataValues['startDate'].toDateString();
