@@ -1,5 +1,8 @@
 const Router = require("@koa/router");
-const {getUser} = require("../controller/api");
+const {
+    getUser,
+    retrieveUserPost
+} = require("../controller/api");
 
 const router = new Router();
 
@@ -45,7 +48,9 @@ router.get('/myspace',async (ctx,next)=>{
     if(!user){
         ctx.redirect('/signin')
     }else{
-        ctx.body = 'my space'
+        let posts_res = await retrieveUserPost(user.id);
+        let posts = posts_res.data;
+        await ctx.render('myspace',{current:5,user,posts})
     }
 });
 

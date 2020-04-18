@@ -121,3 +121,8 @@ body{
     margin: 2px 5px 2px 0;
     text-align: center;
 }
+.myspace-frame {
+    position: relative;
+    background-color: rgba(223,123,212,0.7);
+    margin: 20px 0;
+}

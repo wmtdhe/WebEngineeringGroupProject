@@ -1,4 +1,8 @@
-const { findUser, createUser } = require('../service/api');
+const { 
+    findUser, 
+    createUser, 
+    getUserPost 
+} = require('../service/api');
 const { SuccessResponse, FailureResponse } = require('./responseModel');
 
 
@@ -22,8 +26,18 @@ async function registerUser(username,password,email){
     }
 }
 
+async function retrieveUserPost(userid) {
+    let posts = await getUserPost(userid);
+    if (posts) {
+        return new SuccessResponse(posts);
+    } else {
+        return new FailureResponse(403, 'No matched posts found')
+    }
+}
+
 
 module.exports = {
     getUser,
-    registerUser
+    registerUser,
+    retrieveUserPost
 };

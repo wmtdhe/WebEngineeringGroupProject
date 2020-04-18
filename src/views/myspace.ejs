@@ -1,0 +1,17 @@
+<%- include('widgets/header'); -%>
+
+<div class="myspace-frame">
+    <% if(!posts){%>
+        <div>
+            No Posts Yet
+        </div>
+    <%}%>
+    <% if(posts){%>
+        <% posts.forEach(function (post) { %>
+            <%- include('widgets/post',{post:post}); -%>
+        <%})%>
+    <%}%>
+</div>
+
+
+<%- include('widgets/footer'); -%>
