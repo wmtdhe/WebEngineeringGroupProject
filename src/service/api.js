@@ -251,7 +251,6 @@ async function getPostsByDestination(destination){
     posts_arr = [];
     try{
         if (destination && destination.trim().length > 0) {
-            console.log(destination, destination.trim().length);
             whereOption = {destination: {[Op.like]:'%' + destination + '%'}}
         } else {
             return null;

@@ -105,6 +105,29 @@ async function retrievePostsByDestination(destination){
     }
 }
 
+async function getApi(url) {
+    var request = require('request');
+    await request(url, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            return body;
+         }
+    })
+}
+
+async function getApi(url){
+    try{
+        var rp = require ('request-promise-native');
+        var options = {
+        uri:url,
+        json:true
+    };
+    var response = await rp(options);
+    return response;
+    }catch(e){
+        return new FailureResponse(999, 'failed get data from restful api')
+    }        
+}
+
 
 module.exports = {
     getUser,
@@ -116,5 +139,6 @@ module.exports = {
     retrieveComments,
     retrievePostPictures,
     retrievePostsByTagname,
-    retrievePostsByDestination
+    retrievePostsByDestination,
+    getApi
 };

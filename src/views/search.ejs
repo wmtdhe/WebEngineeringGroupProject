@@ -24,20 +24,22 @@
         <%}%>
     </div>
     <aside class="explore-right">
-        <div class="tags">
-            <h4>Tags:</h4>
-            <ul class="tag-list">
-                <% locals.tags.forEach(function(tag){%>
-                    <li><a href="/explore?tag=<%= tag.name%>"><%= tag.name %></a></li>
-                <%})%>
-            </ul>
-        </div>
         <div class="mashup-hot-deal">
             <h4>Hot Deals:</h4>
         </div>
-        <div class="mashup-weather">
-            <h4>Today's Weather:</h4>
-        </div>
+        <% if(weather && Object.keys(weather).length !== 0){%>
+            <div class="mashup-weather">
+                <h4>Today's Weather:</h4>
+                <div><%= weather.name %><img style="width:50px;height:50px" src="<%= weather.condition_icon %>" /><%= weather.condition_text %></div>
+                <div>Local Time: <%= weather.localtime %></div>
+                <div>Temperature: <%= weather.temperature %>℃</div>
+                <div>Wind: <%= weather.wind_mph %> mph</div>
+                <div>Pressure: <%= weather.pressure_mb %> mb</div>
+                <div>Humidity: <%= weather.humidity %>%</div>
+                <div>UV: <%= weather.uv %>%</div>
+
+            </div>
+        <%}%>
     </aside>
 </div>
 
