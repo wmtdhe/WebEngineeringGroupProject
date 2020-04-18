@@ -63,6 +63,29 @@ const Picture = seq.define("picture",{
     }
 });
 
+const Comment = seq.define("comment", {
+    postId:{
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    content:{
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    userId:{
+        type: Sequelize.INTEGER,
+        allowNull: false
+    }
+});
+
+Comment.belongsTo(User, {
+    foreignKey:"userId"
+});
+
+Comment.belongsTo(Post, {
+    foreignKey: "postId"
+});
+
 Post.belongsTo(User,{
     foreignKey:"userId"
 });
@@ -75,5 +98,6 @@ module.exports = {
     User,
     Post,
     Tag,
-    Picture
+    Picture,
+    Comment
 };
