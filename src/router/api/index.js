@@ -5,6 +5,7 @@ const {
     postComment,
     retrieveComments,
     retrievePost,
+    createPost,
     deletePost
 } = require('../../controller/api');
 const {SuccessResponse, FailureResponse} = require("../../controller/responseModel");
@@ -49,6 +50,10 @@ router.get('/posts-delete', async(ctx,next)=>{
     ctx.body = result;
 });
 
-
+router.post('/new_idea',async(ctx,next)=>{
+    let {title, destination, start_date, end_date, tags} = ctx.request.body;
+    let result = await new_idea(title, destination, start_date, end_date, tags);
+    ctx.body = result;
+});
 
 module.exports = router;

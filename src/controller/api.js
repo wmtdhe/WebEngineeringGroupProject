@@ -3,6 +3,7 @@ const {
     createUser, 
     getUserPosts,
     getPost,
+    createPost,
     delPost,
     poComment,
     getComments,
@@ -48,6 +49,15 @@ async function retrievePost(postId){
         return new SuccessResponse(post);
     } else {
         return new FailureResponse(403, 'No matched posts found')
+    }
+}
+
+async function new_idea(title, destination, start_date, end_date, tags){
+    let result = await createPost(title, destination, start_date, end_date, tags);
+    if(result) {
+
+    } else {
+        
     }
 }
 
@@ -134,6 +144,7 @@ module.exports = {
     registerUser,
     retrieveUserPosts,
     retrievePost,
+    new_idea,
     deletePost,
     postComment,
     retrieveComments,

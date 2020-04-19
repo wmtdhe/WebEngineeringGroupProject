@@ -148,6 +148,10 @@ async function getPost(postId){
     }
 }
 
+async function createPost() {
+
+}
+
 async function delPost(postId){
     let whereOption = {};
     try{
@@ -281,6 +285,7 @@ module.exports = {
     createUser,
     getUserPosts,
     getPost,
+    createPost,
     delPost,
     poComment,
     getComments,
