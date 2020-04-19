@@ -184,3 +184,13 @@ body{
     display: flex;
     flex-direction: column;
 }
+
+.travel_ideas h4{
+    padding: 15px;
+}
+
+.form-editIdea{
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+}

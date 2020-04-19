@@ -80,6 +80,15 @@ router.get('/myspace',async (ctx,next)=>{
     }
 });
 
+router.get('/edit',async (ctx,nect)=>{
+    let { user } = ctx.session;
+    if(!user){
+        ctx.redirect('/signin')
+    }else{
+        await ctx.render('edit_post',{current:7,user})
+    }
+});
+
 router.get('/posts', async(ctx, next)=>{
     let { user } = ctx.session;
     if(!user){
