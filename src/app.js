@@ -9,7 +9,7 @@ const apiRouter = require("./router/api");
 const app = new Koa();
 
 app.use(static("./public")); // load static file
-app.use(koaBody()); // body parsing
+app.use(koaBody({multipart: true})); // body parsing
 
 //session
 app.keys = ['whatever'];

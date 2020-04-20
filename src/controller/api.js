@@ -52,12 +52,12 @@ async function retrievePost(postId){
     }
 }
 
-async function new_idea(title, destination, start_date, end_date, tags){
-    let result = await createPost(title, destination, start_date, end_date, tags);
+async function new_idea(user_id, title, destination, start_date, end_date, tags, image){
+    let result = await createPost(user_id, title, destination, start_date, end_date, tags, image);
     if(result) {
-
+        return new SuccessResponse();
     } else {
-        
+        return new FailureResponse(500, 'Error occurred');
     }
 }
 
