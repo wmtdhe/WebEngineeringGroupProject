@@ -8,7 +8,8 @@ const {
     retrievePostPictures,
     retrievePostsByTagname,
     retrievePostsByDestination,
-    getApi
+    getApi,
+    getLatestPosts
 } = require("../controller/api");
 
 const router = new Router();
@@ -17,23 +18,54 @@ const router = new Router();
 router.get('/',async (ctx, next)=>{
     let {user} = ctx.session;
     // console.log(user)
-    await ctx.render('index',{user,current:0})
+    let recommendations = await getLatestPosts();
+    let ret = [];
+    if(recommendations.errno===0){
+        ret = recommendations.data
+    }
+    await ctx.render('index',{user,current:0, recommendations:ret})
 });
 
 router.get('/explore',async (ctx, next)=>{
     let {user} = ctx.session;
     let {type, query} = ctx.query;
+
+    // default query
+    if(!type && !query){
+        query = 'hongkong';
+        type = 'destination'
+    }
+
     var posts = [];
     var weather = {};
+    var covidUpdates = {};
+
+    let covidApi = `https://covid19-server.chrismichael.now.sh/api/v1/AllReports`;
+    let covid_res = await getApi(covidApi,true);
+
+    if(covid_res.errno!==999){
+        // get top 10 reporting countries
+        let reports = covid_res.reports[0];
+        let {cases, deaths, recovered, table} = reports;
+        let countries = table[0]; //get top 10
+        covidUpdates.cases = cases;
+        covidUpdates.deaths = deaths;
+        covidUpdates.recovered = recovered;
+        covidUpdates.tops = countries.slice(1,11);
+        // console.log(covidUpdates.tops)
+    }
+
     if (type === 'tag') {
         let posts_res = await retrievePostsByTagname(query);
-        posts = posts_res.data;
+        posts = posts_res.data?posts_res.data:[];
     } else if (type === 'destination') {
         let posts_res = await retrievePostsByDestination(query);
-        posts = posts_res.data;
+        posts = posts_res.data?posts_res.data:[];
 
+        console.log(posts)
         let weatherApi = 'http://api.weatherapi.com/v1/current.json?key=8da9b490cc334d63b03151247201804&q=' + query;
-        weather_res = await getApi(weatherApi);
+        let weather_res = await getApi(weatherApi);
+
         if (weather_res.errno!==999) {
             weather['name'] = weather_res['location']['name'];
             weather['localtime'] = weather_res['location']['localtime'];
@@ -45,8 +77,9 @@ router.get('/explore',async (ctx, next)=>{
             weather['humidity'] = weather_res['current']['humidity'];
             weather['uv'] = weather_res['current']['uv'];
         }
+
     }
-   await ctx.render('search',{current:1, posts, user, type, query, weather})
+   await ctx.render('search',{current:1, posts, user, type, query, weather, covidUpdates})
 });
 
 router.get('/signin',async (ctx, next)=>{

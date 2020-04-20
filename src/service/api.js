@@ -280,6 +280,19 @@ async function getPostsByDestination(destination){
     }
 }
 
+async function queryNewestPosts(count=3){
+    try{
+        let posts = await Post.findAll({
+            order:[['updatedAt','desc']],
+            limit:count
+        });
+
+        return posts
+    }catch (e) {
+        return null
+    }
+}
+
 module.exports = {
     findUser,
     createUser,
@@ -291,5 +304,6 @@ module.exports = {
     getComments,
     getPictures,
     getPostsByTagname,
-    getPostsByDestination
+    getPostsByDestination,
+    queryNewestPosts
 };

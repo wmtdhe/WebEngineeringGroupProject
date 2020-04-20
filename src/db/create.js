@@ -1,18 +1,15 @@
-let { User } = require("./model");
+let { User, Post } = require("./model");
 
 (async function(){
-    let u1 =await User.create({
-       username:'u1',
-       password:'123456',
+
+    let p1 =await Post.create({
+       title:'p3',
+       content:'p3 content',
+       userId:1,
+       destination:'nanjing',
+       startDate:new Date(),
+       endDate:new Date()
     });
-    let u2 =await User.create({
-        username:'u2',
-        password:'123456',
-    });
-    let u3 =await User.create({
-        username:'u3',
-        password:'123456',
-    });
-    console.log(u1.dataValues, u2.dataValues, u3.dataValues)
+    console.log(p1.dataValues);
     process.exit();
 }());

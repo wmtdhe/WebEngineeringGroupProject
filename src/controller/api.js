@@ -9,7 +9,8 @@ const {
     getComments,
     getPictures,
     getPostsByTagname,
-    getPostsByDestination
+    getPostsByDestination,
+    queryNewestPosts
 } = require('../service/api');
 const { SuccessResponse, FailureResponse } = require('./responseModel');
 
@@ -115,27 +116,40 @@ async function retrievePostsByDestination(destination){
     }
 }
 
-async function getApi(url) {
-    var request = require('request');
-    await request(url, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            return body;
-         }
-    })
-}
+// async function getApi(url) {
+//     var request = require('request');
+//     await request(url, function (error, response, body) {
+//         if (!error && response.statusCode == 200) {
+//             return body;
+//          }
+//     })
+// }
 
-async function getApi(url){
+async function getApi(url,headers){
     try{
         var rp = require ('request-promise-native');
         var options = {
         uri:url,
-        json:true
+        json:true,
     };
     var response = await rp(options);
     return response;
     }catch(e){
+        console.log(e.message)
         return new FailureResponse(999, 'failed get data from restful api')
     }        
+}
+
+// get three for home page recommendations
+async function getLatestPosts(){
+    let result = await queryNewestPosts();
+    // console.log(result)
+    if(result){
+        let ret = result.map(v=>v.dataValues);
+        return new SuccessResponse(ret)
+    }else{
+        return new FailureResponse(1011,'no recommendations found')
+    }
 }
 
 
@@ -151,5 +165,6 @@ module.exports = {
     retrievePostPictures,
     retrievePostsByTagname,
     retrievePostsByDestination,
-    getApi
+    getApi,
+    getLatestPosts
 };
