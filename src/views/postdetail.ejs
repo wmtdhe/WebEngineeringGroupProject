@@ -35,22 +35,62 @@
                 No Comments Yet
             </div>
         <%}%>
+        <div id="comment-container">
         <% if(comments){%>
             <% comments.forEach(function (comment) { %>
-                <div class="comment-frame">
-                    <div class="comment-username"><%= comment.username %></div>
-                    <div class="comment-time"><%= comment.updatedAt %></div>
-                    <div class="comment-content"><%= comment.content %></div>
-                </div>
+                    <div class="comment-frame">
+                        <div class="comment-username"><%= comment.username %></div>
+                        <div class="comment-time"><%= comment.updatedAt %></div>
+                        <div class="comment-content"><%= comment.content %></div>
+                    </div>
             <%})%>
         <%}%>
+        </div>
         
     <%}%>
 </div>
 
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
 <script>
 
+    function getFormattedDatetime(t) {
+        hr = ("0" + t.getHours()).slice(-2);
+        min = ("0" + t.getMinutes()).slice(-2);
+        sec = ("0" + t.getSeconds()).slice(-2);
+        return t.getFullYear()+"-"+(t.getMonth()+1)+"-"+t.getDate()+" "+hr+":"+min+":"+sec;
+    }
+
+    var socket = io.connect('http://localhost:3000');
+    socket.on('serverEmit', function(data){
+
+        if (data['postId'] != <%= post.id %>) {
+            return ;
+        }
+
+        var comment_frame_div = document.createElement('div');
+        comment_frame_div.className = "comment-frame";
+
+        var comment_username_div = document.createElement('div');
+        comment_username_div.className = "comment-username";
+        comment_username_div.innerHTML = data['username'];
+
+        var comment_time_div = document.createElement('div');
+        comment_time_div.className = "comment-time";
+        comment_time_div.innerHTML = getFormattedDatetime(new Date());
+
+        var comment_content_div = document.createElement('div');
+        comment_content_div.className = "comment-content";
+        comment_content_div.innerHTML = data['content'];
+
+        comment_frame_div.appendChild(comment_username_div);
+        comment_frame_div.appendChild(comment_time_div);
+        comment_frame_div.appendChild(comment_content_div);
+
+        $('#comment-container').prepend(comment_frame_div);
+    })
+
     $(function () {
+
         $('#submit').click(function (e) {
             e.preventDefault();
             var content = $("#comment").val();
@@ -70,6 +110,8 @@
                     postId
                 },
                 success:function (res) {
+                    c = {'postId': <%= post.id %>, 'username': '<%= user.username %>', 'content': content};
+                    socket.emit('comment', c);
                     location.assign('/posts?id=<%= post.id %>')
                 },
                 error:function (e) {

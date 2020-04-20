@@ -5,7 +5,7 @@ const {
     postComment,
     retrieveComments,
     retrievePost,
-    createPost,
+    new_idea,
     deletePost
 } = require('../../controller/api');
 const {SuccessResponse, FailureResponse} = require("../../controller/responseModel");
@@ -51,8 +51,10 @@ router.get('/posts-delete', async(ctx,next)=>{
 });
 
 router.post('/new_idea',async(ctx,next)=>{
-    let {title, destination, start_date, end_date, tags} = ctx.request.body;
-    let result = await new_idea(title, destination, start_date, end_date, tags);
+    let {user_id, title, destination, start_date, end_date, content, tags} = ctx.request.body;
+    let image = ctx.request.files.image;
+    //console.error(user_id, title, destination, start_date, end_date, tags, image);
+    let result = await new_idea(user_id, title, destination, start_date, end_date, content, tags, image);
     ctx.body = result;
 });
 

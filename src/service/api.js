@@ -8,6 +8,7 @@ const {
 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+const fs = require('fs');
 
 function getFormattedDatetime(t) {
     hr = ("0" + t.getHours()).slice(-2);
@@ -148,8 +149,48 @@ async function getPost(postId){
     }
 }
 
-async function createPost() {
+async function createPost(user_id, title, destination, start_date, end_date, content, tags, image) {
+    //console.error(user_id, title, destination, start_date, end_date, content, tags, image)
+    try{
+        let new_post = await Post.create({
+            userId: user_id,
+            title: title,
+            destination: destination,
+            startDate: start_date,
+            endDate: end_date,
+            content: content
+        });
+        
+        if(Array.isArray(tags)) {
+            tags.forEach(async function(tag){
+                let insert_tag = await Tag.create({
+                    name: tag,
+                    postId: new_post.id
+                });
+            });
+        } else {
+            let insert_tag = await Tag.create({
+                name: tags,
+                postId: new_post.id
+            });
+        }
+        
+        if(image !== undefined) {
+            let dest_path = 'public/img/upload_images/' + new_post.id + '-' + image.name;
+            fs.copyFileSync(image.path, dest_path);
+            let insert_photo = await Picture.create({
+                url: dest_path,
+                userId: user_id,
+                postId: new_post.id
+            })
+        }
 
+        return true;
+
+    }catch (e) {
+        console.error(e.message)
+        return null
+    }
 }
 
 async function delPost(postId){

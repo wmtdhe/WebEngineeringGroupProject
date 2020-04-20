@@ -4,6 +4,10 @@
     <h4>Please use the form below to share your idea.</h4>
     <form class="form-editIdea">
         <div class="form-group">
+            <input type="hidden" id="user_id" name="user_id" value="<%=user.id%>">
+        </div>
+
+        <div class="form-group">
             <label for="title">Title: </label>
             <input type="text" class="form-control" id="title">
         </div>
@@ -21,6 +25,11 @@
         <div class="form-group">
             <label for="end_date">End Date: </label>
             <input type="date" class="form-control" id="end_date">
+        </div>
+
+        <div class="form-group">
+            <label for="content">Content: </label>
+            <textarea class="form-control" id="content" rows="4"></textarea>
         </div>
 
         <div class="form-group">
@@ -50,7 +59,7 @@
 
         <div class="form-group">
             <label for="upload_image">Upload Image (Optional): </label>
-            <input class="form-control" type="file" id="upload_image" accept="" />
+            <input class="form-control" type="file" id="upload_image" accept="image/png, image/jpeg" />
         </div>
 
         <button type="submit" class="btn btn-primary" id="submit">Submit</button>
@@ -79,63 +88,88 @@
         // onlick listener for the form submit button 
         $('#submit').click(function (e) {
             e.preventDefault();
-            let errorArr = []
+            let errorArr = [];
+            let user_id = $("#user_id").val();
             let title = $("#title").val();
-            let destination = $('destination').val();
-            let start_date = $('start_date').val();
-            let end_date = $('end_date').val();
+            let destination = $('#destination').val();
+            let start_date = $('#start_date').val();
+            let end_date = $('#end_date').val();
+            let content = $('#content').val();
             let tag1 = $('#tag1').val();
             let tag2 = $('#tag2').val();
             let tag3 = $('#tag3').val();
             let tag4 = $('#tag4').val();
             let tag5 = $('#tag5').val();
             let tags = [];
+            let image = $('#upload_image')[0].files[0];
+            let data = new FormData();
 
-            if (title.length < 5) {
+            if (title == "") {
                 errorArr.push('Wrong format in title');
             }
 
-            if (destination.length < 5) {
+            if (destination == "") {
                 errorArr.push('Wrong format in destination');
             }
 
-            if (start_date == undefined) {
+            if (content == "") {
+                errorArr.push('Wrong format in contect');
+            }
+
+            if (start_date == "") {
                 errorArr.push('Wrong format in start date');
             }
 
-            if (end_date == undefined) {
+            if (end_date == "") {
                 errorArr.push('Wrong format in end date');
             }
 
+            if (end_date < start_date) {
+                errorArr.push('End date should greater than start date');
+            }
+
             if (tag1.length > 0) {
-                tags.push(tag1);
+                data.append("tags", tag1);
             } else {
                 errorArr.push('Tag 1 must be filled');
             }
 
             if (tag2.length > 0) {
-                tags.push(tag2);
+                data.append("tags", tag2);
             }
             if (tag3.length > 0) {
-                tags.push(tag3);
+                data.append("tags", tag3);
             }
             if (tag4.length > 0) {
-                tags.push(tag4);
+                data.append("tags", tag4);
             }
             if (tag5.length > 0) {
-                tags.push(tag5);
+                data.append("tags", tag5);
             }
 
+            if(errorArr.length!==0){
+                popError(errorArr)
+                return;
+            }
+
+            data.append("user_id", user_id);
+            data.append("title", title);
+            data.append("destination", destination);
+            data.append("start_date", start_date);
+            data.append("end_date", end_date);
+            data.append("content", content);
+            if (image !== undefined) {
+                data.append("image", image, image.name);
+            } else {
+                data.append("image", undefined);
+            }
+            
             $.ajax({
                 type: 'POST',
                 url: '/api/new_idea',
-                data: {
-                    title,
-                    destination,
-                    start_date,
-                    end_date,
-                    tags
-                },
+                processData: false,  
+                contentType: false,
+                data: data,
                 success: function (res) {
                     console.log(res)
                     if (res.errno === 0) {

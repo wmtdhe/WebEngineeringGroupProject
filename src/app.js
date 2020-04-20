@@ -9,7 +9,7 @@ const apiRouter = require("./router/api");
 const app = new Koa();
 
 app.use(static("./public")); // load static file
-app.use(koaBody()); // body parsing
+app.use(koaBody({multipart: true})); // body parsing
 
 //session
 app.keys = ['whatever'];
@@ -35,6 +35,22 @@ app
     .use(async(ctx)=>{
         ctx.body = "404"
     });
+
+
+
+
+const IO = require("koa-socket");
+const io = new IO();
+io.attach(app);
+
+app._io.on('connection', socket=>{
+    var roomid = 999;
+    socket.join(roomid);
+    socket.on('comment', function(data){
+        socket.broadcast.to(roomid).emit('serverEmit', data);
+    })
+
+})
 
 
 app.listen(3000,function () {

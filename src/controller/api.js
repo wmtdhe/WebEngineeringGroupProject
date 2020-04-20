@@ -53,12 +53,12 @@ async function retrievePost(postId){
     }
 }
 
-async function new_idea(title, destination, start_date, end_date, tags){
-    let result = await createPost(title, destination, start_date, end_date, tags);
+async function new_idea(user_id, title, destination, start_date, end_date, content, tags, image){
+    let result = await createPost(user_id, title, destination, start_date, end_date, content, tags, image);
     if(result) {
-
+        return new SuccessResponse();
     } else {
-        
+        return new FailureResponse(500, 'Error occurred');
     }
 }
 
@@ -116,6 +116,7 @@ async function retrievePostsByDestination(destination){
     }
 }
 
+<<<<<<< HEAD
 // async function getApi(url) {
 //     var request = require('request');
 //     await request(url, function (error, response, body) {
@@ -126,6 +127,9 @@ async function retrievePostsByDestination(destination){
 // }
 
 async function getApi(url,headers){
+=======
+async function getApi(url){
+>>>>>>> refs/remotes/origin/master
     try{
         var rp = require ('request-promise-native');
         var options = {
