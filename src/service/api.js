@@ -149,15 +149,16 @@ async function getPost(postId){
     }
 }
 
-async function createPost(user_id, title, destination, start_date, end_date, tags, image) {
-    console.error(user_id, title, destination, start_date, end_date, tags, image)
+async function createPost(user_id, title, destination, start_date, end_date, content, tags, image) {
+    //console.error(user_id, title, destination, start_date, end_date, content, tags, image)
     try{
         let new_post = await Post.create({
             userId: user_id,
             title: title,
             destination: destination,
             startDate: start_date,
-            endDate: end_date
+            endDate: end_date,
+            content: content
         });
         
         if(Array.isArray(tags)) {

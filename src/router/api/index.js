@@ -51,10 +51,10 @@ router.get('/posts-delete', async(ctx,next)=>{
 });
 
 router.post('/new_idea',async(ctx,next)=>{
-    let {user_id, title, destination, start_date, end_date, tags} = ctx.request.body;
+    let {user_id, title, destination, start_date, end_date, content, tags} = ctx.request.body;
     let image = ctx.request.files.image;
     //console.error(user_id, title, destination, start_date, end_date, tags, image);
-    let result = await new_idea(user_id, title, destination, start_date, end_date, tags, image);
+    let result = await new_idea(user_id, title, destination, start_date, end_date, content, tags, image);
     ctx.body = result;
 });
 

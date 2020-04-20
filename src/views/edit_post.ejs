@@ -28,6 +28,11 @@
         </div>
 
         <div class="form-group">
+            <label for="content">Content: </label>
+            <textarea class="form-control" id="content" rows="4"></textarea>
+        </div>
+
+        <div class="form-group">
             <label for="tag2">Tag 1: </label>
             <input type="text" class="form-control" id="tag1">
         </div>
@@ -84,11 +89,12 @@
         $('#submit').click(function (e) {
             e.preventDefault();
             let errorArr = [];
-            /*let user_id = $("#user_id").val();
+            let user_id = $("#user_id").val();
             let title = $("#title").val();
             let destination = $('#destination').val();
             let start_date = $('#start_date').val();
-            let end_date = $('#end_date').val();*/
+            let end_date = $('#end_date').val();
+            let content = $('#content').val();
             let tag1 = $('#tag1').val();
             let tag2 = $('#tag2').val();
             let tag3 = $('#tag3').val();
@@ -97,20 +103,24 @@
             let tags = [];
             let image = $('#upload_image')[0].files[0];
             let data = new FormData();
-            
-            if (title.length < 5) {
+
+            if (title == "") {
                 errorArr.push('Wrong format in title');
             }
 
-            if (destination.length < 5) {
+            if (destination == "") {
                 errorArr.push('Wrong format in destination');
             }
 
-            if (start_date == undefined) {
+            if (content == "") {
+                errorArr.push('Wrong format in contect');
+            }
+
+            if (start_date == "") {
                 errorArr.push('Wrong format in start date');
             }
 
-            if (end_date == undefined) {
+            if (end_date == "") {
                 errorArr.push('Wrong format in end date');
             }
 
@@ -137,13 +147,23 @@
                 data.append("tags", tag5);
             }
 
-            data.append("user_id", $("#user_id").val());
-            data.append("title", $("#title").val());
-            data.append("destination", $('#destination').val());
-            data.append("start_date", $('#start_date').val());
-            data.append("end_date", $('#end_date').val());
-            data.append("image", image, image.name);
+            if(errorArr.length!==0){
+                popError(errorArr)
+                return;
+            }
 
+            data.append("user_id", user_id);
+            data.append("title", title);
+            data.append("destination", destination);
+            data.append("start_date", start_date);
+            data.append("end_date", end_date);
+            data.append("content", content);
+            if (image !== undefined) {
+                data.append("image", image, image.name);
+            } else {
+                data.append("image", undefined);
+            }
+            
             $.ajax({
                 type: 'POST',
                 url: '/api/new_idea',

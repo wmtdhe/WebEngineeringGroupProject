@@ -52,8 +52,8 @@ async function retrievePost(postId){
     }
 }
 
-async function new_idea(user_id, title, destination, start_date, end_date, tags, image){
-    let result = await createPost(user_id, title, destination, start_date, end_date, tags, image);
+async function new_idea(user_id, title, destination, start_date, end_date, content, tags, image){
+    let result = await createPost(user_id, title, destination, start_date, end_date, content, tags, image);
     if(result) {
         return new SuccessResponse();
     } else {
