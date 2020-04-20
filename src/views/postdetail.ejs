@@ -63,6 +63,10 @@
     var socket = io.connect('http://localhost:3000');
     socket.on('serverEmit', function(data){
 
+        if (data['postId'] != <%= post.id %>) {
+            return ;
+        }
+
         var comment_frame_div = document.createElement('div');
         comment_frame_div.className = "comment-frame";
 
@@ -106,7 +110,7 @@
                     postId
                 },
                 success:function (res) {
-                    c = {'username': '<%= user.username %>', 'content': content};
+                    c = {'postId': <%= post.id %>, 'username': '<%= user.username %>', 'content': content};
                     socket.emit('comment', c);
                     location.assign('/posts?id=<%= post.id %>')
                 },
