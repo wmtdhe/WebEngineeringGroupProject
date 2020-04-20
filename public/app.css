@@ -159,7 +159,7 @@ body{
 .comment-frame{
     position: relative;
     background-color: #F7F8E7;
-    margin: 5px 0;
+    margin-bottom: 10px;
     display: flex;
     flex-direction: column;
 }

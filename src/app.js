@@ -37,6 +37,22 @@ app
     });
 
 
+
+
+const IO = require("koa-socket");
+const io = new IO();
+io.attach(app);
+
+app._io.on('connection', socket=>{
+    var roomid = 999;
+    socket.join(roomid);
+    socket.on('comment', function(data){
+        socket.broadcast.to(roomid).emit('serverEmit', data);
+    })
+
+})
+
+
 app.listen(3000,function () {
     console.log(200)
 });
