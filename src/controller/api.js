@@ -4,13 +4,15 @@ const {
     getUserPosts,
     getPost,
     createPost,
+    updatePost,
     delPost,
     poComment,
     getComments,
     getPictures,
     getPostsByTagname,
     getPostsByDestination,
-    queryNewestPosts
+    queryNewestPosts,
+    getPostForEdit
 } = require('../service/api');
 const { SuccessResponse, FailureResponse } = require('./responseModel');
 
@@ -53,8 +55,26 @@ async function retrievePost(postId){
     }
 }
 
+async function retrievePost_forEdit(postId){
+    let post = await getPostForEdit(postId);
+    if (post) {
+        return new SuccessResponse(post);
+    } else {
+        return new FailureResponse(403, 'No matched posts found')
+    }
+}
+
 async function new_idea(user_id, title, destination, start_date, end_date, content, tags, image){
     let result = await createPost(user_id, title, destination, start_date, end_date, content, tags, image);
+    if(result) {
+        return new SuccessResponse();
+    } else {
+        return new FailureResponse(500, 'Error occurred');
+    }
+}
+
+async function update_idea(post_id, user_id, title, destination, start_date, end_date, content, image){
+    let result = await updatePost(post_id, user_id, title, destination, start_date, end_date, content, image);
     if(result) {
         return new SuccessResponse();
     } else {
@@ -160,6 +180,7 @@ module.exports = {
     retrieveUserPosts,
     retrievePost,
     new_idea,
+    update_idea,
     deletePost,
     postComment,
     retrieveComments,
@@ -167,5 +188,6 @@ module.exports = {
     retrievePostsByTagname,
     retrievePostsByDestination,
     getApi,
-    getLatestPosts
+    getLatestPosts,
+    retrievePost_forEdit
 };

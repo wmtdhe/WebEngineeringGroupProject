@@ -9,7 +9,8 @@ const {
     retrievePostsByTagname,
     retrievePostsByDestination,
     getApi,
-    getLatestPosts
+    getLatestPosts,
+    retrievePost_forEdit
 } = require("../controller/api");
 
 const router = new Router();
@@ -113,19 +114,19 @@ router.get('/myspace',async (ctx,next)=>{
     }
 });
 
-router.get('/edit',async (ctx,nect)=>{
+router.get('/manage_post',async (ctx,nect)=>{
     let { user } = ctx.session;
     if(!user){
         ctx.redirect('/signin')
     }else{
         if(ctx.query != null) {
             let { id } = ctx.query;
-            let post_res = await retrievePost(id);
+            let post_res = await retrievePost_forEdit(id);
             let post = post_res.data;
 
-            await ctx.render('edit_post',{current:7,user,post})
+            await ctx.render('manage_post',{current:7,user,post})
         } else {
-            await ctx.render('edit_post',{current:7,user})
+            await ctx.render('manage_post',{current:7,user})
         }
     }
 });

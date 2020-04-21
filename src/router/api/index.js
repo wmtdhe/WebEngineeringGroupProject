@@ -6,6 +6,7 @@ const {
     retrieveComments,
     retrievePost,
     new_idea,
+    update_idea,
     deletePost
 } = require('../../controller/api');
 const {SuccessResponse, FailureResponse} = require("../../controller/responseModel");
@@ -55,6 +56,13 @@ router.post('/new_idea',async(ctx,next)=>{
     let image = ctx.request.files.image;
     //console.error(user_id, title, destination, start_date, end_date, tags, image);
     let result = await new_idea(user_id, title, destination, start_date, end_date, content, tags, image);
+    ctx.body = result;
+});
+
+router.post('/update_idea',async(ctx,next)=>{
+    let {post_id, user_id, title, destination, start_date, end_date, content} = ctx.request.body;
+    let image = ctx.request.files.image;
+    let result = await update_idea(post_id, user_id, title, destination, start_date, end_date, content, image);
     ctx.body = result;
 });
 

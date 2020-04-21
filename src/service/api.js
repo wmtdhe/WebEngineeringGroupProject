@@ -149,6 +149,30 @@ async function getPost(postId){
     }
 }
 
+async function getPostForEdit(postId){
+    let whereOption = {};
+    try{
+        if (postId)whereOption.id = postId;
+        let post = await Post.findOne({
+            where: whereOption,
+            attributes:['id', 'userId', 'title', 'content', 'updatedAt', 'destination', 'startDate', 'endDate']
+        });
+        if(!post) return null;
+        let tags = await getPostTags(post.dataValues['id']);
+        post.dataValues['tag'] = tags.join(', ');
+        let updatedAt = getFormattedDatetime(post.dataValues['updatedAt']);
+        let start_date = getFormattedDatetime(post.dataValues['startDate']);
+        let end_date = getFormattedDatetime(post.dataValues['endDate']);
+        post.dataValues['updatedAt'] = updatedAt;
+        post.dataValues['startDate'] = start_date;
+        post.dataValues['endDate'] = end_date;
+        
+        return post.dataValues;
+    }catch(e){
+        return null;
+    }
+}
+
 async function createPost(user_id, title, destination, start_date, end_date, content, tags, image) {
     //console.error(user_id, title, destination, start_date, end_date, content, tags, image)
     try{
@@ -182,6 +206,39 @@ async function createPost(user_id, title, destination, start_date, end_date, con
                 url: dest_path,
                 userId: user_id,
                 postId: new_post.id
+            })
+        }
+
+        return true;
+
+    }catch (e) {
+        console.error(e.message)
+        return null
+    }
+}
+
+async function updatePost(post_id, user_id, title, destination, start_date, end_date, content, image) {
+    try{
+        let update_post = await Post.update({
+            title: title,
+            destination: destination,
+            startDate: start_date,
+            endDate: end_date,
+            content: content
+        },
+        {
+            where:{
+                id: post_id
+            }
+        });
+        
+        if(image !== undefined) {
+            let dest_path = 'public/img/upload_images/' + post_id + '-' + image.name;
+            fs.copyFileSync(image.path, dest_path);
+            let insert_photo = await Picture.create({
+                url: dest_path,
+                userId: user_id,
+                postId: post_id
             })
         }
 
@@ -340,11 +397,13 @@ module.exports = {
     getUserPosts,
     getPost,
     createPost,
+    updatePost,
     delPost,
     poComment,
     getComments,
     getPictures,
     getPostsByTagname,
     getPostsByDestination,
-    queryNewestPosts
+    queryNewestPosts,
+    getPostForEdit
 };

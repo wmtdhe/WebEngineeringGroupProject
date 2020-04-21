@@ -22,6 +22,7 @@
         <%}%>
 
         <% if(post.userId === user.id){%>
+            <button type="button" class="btn btn-primary btn-comment" onclick="window.location.href='/manage_post?id=<%= post.id %>'">Edit Post</button>
             <button type="submit" class="btn btn-primary btn-comment" id="delete-post">Delete Post</button>
         <%}%>
         <div class="form-group div-comment">
@@ -129,6 +130,21 @@
                 url:'/api/posts-delete?id=<%= post.id %>',
                 success:function (res) {
                     location.assign('/myspace')
+                },
+                error:function (e) {
+                    console.log(e)
+                }
+            })
+        })
+
+        $('#edit-post').click(function(e) {
+            e.preventDefault();
+            let postId = <%= post.id %>;
+            $.ajax({
+                type:'GET',
+                url:'/manage_post?id=<%= post.id %>',
+                success:function (res) {
+                    //location.assign('/myspace')
                 },
                 error:function (e) {
                     console.log(e)
