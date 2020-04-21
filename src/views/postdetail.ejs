@@ -17,7 +17,7 @@
 
         <% if(pictures){%>
             <% pictures.forEach(function (picture) { %>
-                <img src="<%= picture.url %>" class="post-image">
+                <img src="<%= picture.url.slice(7) %>" class="post-image">
             <%})%>
         <%}%>
 

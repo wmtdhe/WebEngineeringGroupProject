@@ -144,9 +144,15 @@ async function getApi(url){
 // get three for home page recommendations
 async function getLatestPosts(){
     let result = await queryNewestPosts();
-    // console.log(result)
     if(result){
-        let ret = result.map(v=>v.dataValues);
+        let ret = result.map(v=>{
+            let post = v.dataValues
+            post.pictures = post.pictures.map(pic=>{
+                pic.url = pic.url.slice(7);
+                return pic
+            });
+            return post
+        });
         return new SuccessResponse(ret)
     }else{
         return new FailureResponse(1011,'no recommendations found')
