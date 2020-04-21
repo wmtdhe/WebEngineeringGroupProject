@@ -118,7 +118,15 @@ router.get('/edit',async (ctx,nect)=>{
     if(!user){
         ctx.redirect('/signin')
     }else{
-        await ctx.render('edit_post',{current:7,user})
+        if(ctx.query != null) {
+            let { id } = ctx.query;
+            let post_res = await retrievePost(id);
+            let post = post_res.data;
+
+            await ctx.render('edit_post',{current:7,user,post})
+        } else {
+            await ctx.render('edit_post',{current:7,user})
+        }
     }
 });
 
