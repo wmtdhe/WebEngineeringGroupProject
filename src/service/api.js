@@ -232,7 +232,7 @@ async function getComments(postId){
 
         if (!comments) return null;
         for (comment of comments) {
-            let user = await getUser(comment.dataValues['userid']);
+            let user = await getUser(comment.dataValues['userId']);
             comment.dataValues['username'] = user.username;
             let updatedAt = getFormattedDatetime(comment.dataValues['updatedAt']);
             comment.dataValues['updatedAt'] = updatedAt;

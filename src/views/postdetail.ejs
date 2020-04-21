@@ -100,7 +100,7 @@
                 return; 
             }
             let postId = <%= post.id %>;
-            let userId = <%= user.id %>
+            let userId = <%= user.id %>;
             $.ajax({
                 type:'POST',
                 url:'/api/comment',
@@ -112,7 +112,7 @@
                 success:function (res) {
                     c = {'postId': <%= post.id %>, 'username': '<%= user.username %>', 'content': content};
                     socket.emit('comment', c);
-                    location.assign('/posts?id=<%= post.id %>')
+                    location.assign('/posts?id=<%= post.id %>');
                 },
                 error:function (e) {
                     console.log(e)
