@@ -382,11 +382,20 @@ async function queryNewestPosts(count=3){
     try{
         let posts = await Post.findAll({
             order:[['updatedAt','desc']],
-            limit:count
+            limit:count,
+            include:[{
+                model:Picture,
+                where:{
+                    postId: Sequelize.col('post.id'),
+                },
+                required:false
+            }]
         });
-
+        //console.log('here')
+        // console.log(posts)
         return posts
     }catch (e) {
+        console.log(e.message)
         return null
     }
 }

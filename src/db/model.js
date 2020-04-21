@@ -105,6 +105,8 @@ const Comment = seq.define("comment", {
 //     foreignKey:"tagId"
 // });
 
+Post.hasMany(Picture);
+
 module.exports = {
     User,
     Post,

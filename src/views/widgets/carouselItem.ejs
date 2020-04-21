@@ -1,8 +1,10 @@
 
 <div class="carousel-item <% if(locals.index==0){%> active <%}%>" data-interval="5000">
-    <a href="/posts?id=<%= locals.recommendation.id %>"><img src="img/img1.jpg" class="d-block w-100 h-100" ></a>
+    <a href="/posts?id=<%= locals.recommendation.id %>">
+        <img src="<%if(locals.recommendation.pictures && locals.recommendation.pictures.length>0){%><%=locals.recommendation.pictures[0].url%><%}%> <%if(locals.recommendation.pictures && locals.recommendation.pictures.length===0){%>img/img1.jpg<%}%>" class="d-block w-100 h-100" >
+    </a>
     <div class="carousel-caption d-none d-md-block">
         <h5><%= locals.recommendation.title %></h5>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <p>Trending</p>
     </div>
 </div>
