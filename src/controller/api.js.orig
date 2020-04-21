@@ -116,7 +116,7 @@ async function retrievePostsByDestination(destination){
     }
 }
 
-
+<<<<<<< HEAD
 // async function getApi(url) {
 //     var request = require('request');
 //     await request(url, function (error, response, body) {
@@ -126,7 +126,10 @@ async function retrievePostsByDestination(destination){
 //     })
 // }
 
+async function getApi(url,headers){
+=======
 async function getApi(url){
+>>>>>>> refs/remotes/origin/master
     try{
         var rp = require ('request-promise-native');
         var options = {
